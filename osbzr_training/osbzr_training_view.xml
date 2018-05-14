@@ -1,5 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <record id='training_subject_tree' model ='ir.ui.view'>
+        <field name='name'>training.subject.tree</field>
+        <field name='model'>training.subject</field>
+        <field name='arch' type='xml'>
+            <tree string='科目'>
+                <field name="name" />
+                <field name="manager_id"/>
+                <field name="description" />
+            </tree>
+        </field>
+    </record>
+
+    <record id='training_subject_form' model ='ir.ui.view'>
+        <field name='name'>training.subject.tree</field>
+        <field name='model'>training.subject</field>
+        <field name='arch' type='xml'>
+            <form string='科目'>
+                <group>
+
+                <field name="name" />
+                <field name="manager_id"  required="1" />
+                <field name="description" />
+                </group>
+                <field name="lesson_ids" />
+            </form>
+        </field>
+    </record>
+
+    <record id='training_lesson_tree' model ='ir.ui.view'>
+        <field name='name'>training.lesson.tree</field>
+        <field name='model'>training.lesson</field>
+        <field name='arch' type='xml'>
+            <tree string='课程'>
+                <field name="name" />
+                <field name="subject_id" />
+                <field name="start_date" />
+                <field name="end_date" />
+                <field name="sites" />
+                <field name="teacher_id" />
+                <field name="student_ids" />
+            </tree>
+        </field>
+    </record>
+
+    <record id='training_lesson_form' model ='ir.ui.view'>
+        <field name='name'>training.lesson.form</field>
+        <field name='model'>training.lesson</field>
+        <field name='arch' type='xml'>
+            <form string='课程'>
+                <group>
+
+                <field name="name" />
+                <field name="subject_id" />
+                <group>
+                    <group>
+                        <field name="start_date" />
+                    </group>
+                    <group>
+                        <field name="end_date" />
+                    </group>
+                 </group>
+                <field name="sites" />
+                <field name="teacher_id" />
+                <field name="student_ids" />
+                </group>
+            </form>
+        </field>
+    </record>
+    <record id='training_res_partner_form' model='ir.ui.view'>
+        <field name='name'>training.res.partner.from</field>
+        <field name='model'>res.partner</field>
+        <field name='inherit_id' ref='base.view_partner_form'/>
+        <field name='arch' type='xml'>
+
+             <field name='function' position='after'>
+                 <field name='is_teacher'/>
+             </field>
+            <field name='vat' position='attributes'>
+                 <attribute name='invisible'>1</attribute>
+             </field>
+            <field name='phone' position='attributes'>
+                 <attribute name='style'>color:red;</attribute>
+             </field>
+        </field>
+    </record>
+
+
     <record id='training_subject_action' model='ir.actions.act_window'>
         <field name='name'>科目</field>
         <field name='res_model'>training.subject</field>
@@ -7,6 +94,25 @@
         <field name='view_mode'>tree,form</field>
     </record>
 
+    <record id='training_lesson_action' model='ir.actions.act_window'>
+        <field name='name'>课程</field>
+        <field name='res_model'>training.lesson</field>
+        <field name='view_type'>form</field>
+        <field name='view_mode'>tree,form</field>
+    </record>
+
+    <record id='res_partner_action' model='ir.actions.act_window'>
+        <field name='name'>学生</field>
+        <field name='res_model'>res.partner</field>
+        <field name='view_type'>form</field>
+        <field name='view_mode'>tree,form</field>
+    </record>
+
     <menuitem id='training_subject_root' name='课程管理系统' sequence='0'/>
-    <menuitem id='training_lesson_menu' name='课程' parent ='training_subject_root' action='training_subject_action' sequence='2'/>
+    <menuitem id='training_subject_menu' name='科目' parent ='training_subject_root'
+              action='training_subject_action' sequence='1'/>
+    <menuitem id='training_lesson_menu' name='课程' parent ='training_subject_root'
+          action='training_lesson_action' sequence='2'/>
+    <menuitem id='res_partner_menu' name='学生' parent ='training_subject_root'
+          action='res_partner_action' sequence='3'/>
 </odoo>
