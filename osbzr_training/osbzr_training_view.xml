@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id='training_subject_action' model='ir.actions.act_window'>
+        <field name='name'>科目</field>
+        <field name='res_model'>training.subject</field>
+        <field name='view_type'>form</field>
+        <field name='view_mode'>tree,form</field>
+    </record>
+
+    <menuitem id='training_subject_root' name='课程管理系统' sequence='0'/>
+    <menuitem id='training_lesson_menu' name='课程' parent ='training_subject_root' action='training_subject_action' sequence='2'/>
+</odoo>

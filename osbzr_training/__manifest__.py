@@ -10,4 +10,5 @@
     """,
     'depends': [],
     'auto_install': False,
+    'data':["osbzr_training_view.xml"]
 }
