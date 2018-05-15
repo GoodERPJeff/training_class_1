@@ -13,7 +13,7 @@
     </record>
 
     <record id='training_subject_form' model ='ir.ui.view'>
-        <field name='name'>training.subject.tree</field>
+        <field name='name'>training_subject_form</field>
         <field name='model'>training.subject</field>
         <field name='arch' type='xml'>
             <form string='科目'>
@@ -40,7 +40,48 @@
                 <field name="sites" />
                 <field name="teacher_id" />
                 <field name="student_ids" />
+                <field name="state" />
             </tree>
+        </field>
+
+    </record>
+
+    <record id='training_lesson_calendar' model ='ir.ui.view'>
+        <field name='name'>training_lesson_calendar</field>
+        <field name='model'>training.lesson</field>
+        <field name='arch' type='xml'>
+            <calendar string='课程' color='subject_id' date_start='start_date' date_stop='end_date'>
+                <field name="name" />
+                <field name="subject_id" />
+                <field name="sites" />
+                <field name="teacher_id" />
+                <field name="student_ids" />
+                <field name="state" />
+            </calendar>
+        </field>
+
+    </record>
+
+
+    <record id='training_lesson_search' model ='ir.ui.view'  >
+        <field name='name'>training_lesson_search</field>
+        <field name='model'>training.lesson</field>
+        <field name='arch' type='xml'>
+            <search string='课程'>
+                <field name="name" />
+                <field name="subject_id" />
+                <field name="sites" />
+                <field name="teacher_id" />
+                <field name="student_ids" />
+                <field name="state" />
+                <separator/>
+                <filter name="startlesson" string="开课状态" domain="[('state','=','start')]"/>
+                <filter name="newlesson" string="招生状态" domain="[('state','=','new')]"/>
+                <separator/>
+
+                <filter string="科目" domain="[]" context="{'group_by':'subject_id'}"/>
+
+            </search>
         </field>
 
     </record>
@@ -53,16 +94,22 @@
                 <group>
 
                 <field name="name" />
-                <field name="subject_id" />
+                <field name="subject_id" context="{'is_form':'1'}"/>
                 <field name="start_date" />
                 <field name="end_date" />
                 <field name="sites" />
-                <field name="teacher_id" />
+                <field name="teacher_id" context="{'is_teacher':'1'}" />
                 <field name="student_ids" />
+                <field name="state" widget='statusbar' statusbar_visible="new,start,end"/>
+                    <button name="start"  string="开课" type="object"
+                        attrs="{'invisible':[('state','in',['end','start'])]}"/>
+                    <button name="end" string="结束" type="object"
+                            attrs="{'invisible':[('state','in',['end','new'])]}"/>
                 </group>
             </form>
         </field>
     </record>
+
     <record id='training_res_partner_form' model='ir.ui.view'>
         <field name='name'>training.res.partner.from</field>
         <field name='model'>res.partner</field>
@@ -90,7 +137,9 @@
         <field name='name'>课程</field>
         <field name='res_model'>training.lesson</field>
         <field name='view_type'>form</field>
-        <field name='view_mode'>tree,form</field>
+        <field name='view_mode'>calendar,tree,form</field>
+        <field name="context">{'search_default_startlesson':'1'}</field>
+        <!--魔术变量，search_default开头，startlesson 为filter的name，进入ui后默认执行该filter-->
     </record>
 
     <record id='res_partner_action' model='ir.actions.act_window'>
