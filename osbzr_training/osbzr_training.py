@@ -1,5 +1,7 @@
 # -*- encoding: utf-8 -*-
-from  odoo  import  models,fields
+from odoo import models, fields, api,exceptions
+
+
 class training_subject(models.Model):
     _name = 'training.subject'
     _rec_name = 'name'
@@ -31,6 +33,20 @@ class training_lesson(models.Model):
     sites = fields.Integer("座位数")
     teacher_id = fields.Many2one(comodel_name='res.partner',string="老师",domain="[('is_teacher','=',True)]")
     student_ids = fields.Many2many(comodel_name='res.partner', string="学生")
+
+    @api.constrains('end_date', 'start_date')
+    def check_edate(self):
+        for lesson in self:
+            if lesson.end_date < lesson.start_date:
+                raise exceptions.ValidationError(u"开始日其不能晚于结束日期！")
+
+    @api.constrains('sites')
+    def check_edate(self):
+        for lesson in self:
+            if lesson.sites <= 0:
+                raise exceptions.ValidationError(u"人数不能为0！")
+
+
 
 class res_partner(models.Model):
     _inherit = 'res.partner'

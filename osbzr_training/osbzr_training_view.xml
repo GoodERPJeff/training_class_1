@@ -42,6 +42,7 @@
                 <field name="student_ids" />
             </tree>
         </field>
+
     </record>
 
     <record id='training_lesson_form' model ='ir.ui.view'>
@@ -53,14 +54,8 @@
 
                 <field name="name" />
                 <field name="subject_id" />
-                <group>
-                    <group>
-                        <field name="start_date" />
-                    </group>
-                    <group>
-                        <field name="end_date" />
-                    </group>
-                 </group>
+                <field name="start_date" />
+                <field name="end_date" />
                 <field name="sites" />
                 <field name="teacher_id" />
                 <field name="student_ids" />
