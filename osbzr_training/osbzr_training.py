@@ -50,8 +50,9 @@ class training_lesson(models.Model):
     end_date = fields.Date("结束日期")
     sites = fields.Integer("座位数")
     teacher_id = fields.Many2one(comodel_name='res.partner',string="老师",domain="[('is_teacher','=',True)]")
-    student_ids = fields.Many2many(comodel_name='res.partner', string="学生")
+    student_ids = fields.Many2many(comodel_name='res.partner', string="学生" )
     state=fields.Selection([('new','招生'),('start','已开课'),('end','已结束')],"课程状态",default='new')
+
 
     @api.constrains('end_date', 'start_date')
     def check_edate(self):
