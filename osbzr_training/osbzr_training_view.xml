@@ -39,7 +39,7 @@
                 <field name="end_date" />
                 <field name="sites" />
                 <field name="teacher_id" />
-                <field name="student_ids" />
+                <field name="student_ids" widget="many2many_tags"/>
                 <field name="state" />
             </tree>
         </field>
@@ -75,6 +75,7 @@
                 <field name="student_ids" />
                 <field name="state" />
                 <separator/>
+                <!--separator 同一个组里面是or 不同组里面是 and-->
                 <filter name="startlesson" string="开课状态" domain="[('state','=','start')]"/>
                 <filter name="newlesson" string="招生状态" domain="[('state','=','new')]"/>
                 <separator/>
@@ -92,20 +93,20 @@
         <field name='arch' type='xml'>
             <form string='课程'>
                 <group>
-
-                <field name="name" />
-                <field name="subject_id" context="{'is_form':'1'}"/>
-                <field name="start_date" />
-                <field name="end_date" />
-                <field name="sites" />
-                <field name="teacher_id" context="{'is_teacher':'1'}" />
-                <field name="student_ids" />
-                <field name="state" widget='statusbar' statusbar_visible="new,start,end"/>
-                    <button name="start"  string="开课" type="object"
-                        attrs="{'invisible':[('state','in',['end','start'])]}"/>
-                    <button name="end" string="结束" type="object"
-                            attrs="{'invisible':[('state','in',['end','new'])]}"/>
+                    <field name="name" />
+                    <field name="subject_id" context="{'is_form':'1'}"/>
+                    <field name="start_date" />
+                    <field name="end_date" />
+                    <field name="sites" />
+                    <field name="teacher_id" context="{'is_teacher':'1'}" options="{'no_open':True,'no_create':True}"/>
+                    <field name="student_ids" />
+                    <field name="state" widget='statusbar' statusbar_visible="new,start,end"/>
                 </group>
+
+                <button name="start"  string="开课" type="object"
+                    attrs="{'invisible':[('state','in',['end','start'])]}"/>
+                <button name="end" string="结束" type="object"
+                        attrs="{'invisible':[('state','in',['end','new'])]}"/>
             </form>
         </field>
     </record>
