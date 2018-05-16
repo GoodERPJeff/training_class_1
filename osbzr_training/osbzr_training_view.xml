@@ -35,11 +35,15 @@
             <tree string='课程'>
                 <field name="name" />
                 <field name="subject_id" />
+                <field name="manager_id" />
                 <field name="start_date" />
                 <field name="end_date" />
+                <field name="continue_days"/>
                 <field name="sites" />
+                <field name="remain_seats" />
+                <field name="progress" widget="progressbar"/>
                 <field name="teacher_id" />
-                <field name="student_ids" widget="many2many_tags"/>
+                <field name="student_ids" widget = "many2many_tags"/>
                 <field name="state" />
             </tree>
         </field>
@@ -84,6 +88,39 @@
 
             </search>
         </field>
+    </record>
+
+
+    <record id='training_apply' model ='ir.ui.view'>
+            <field name='name'>training_apply</field>
+            <field name='model'>training.apply</field>
+            <field name='arch' type='xml'>
+                <form string='课程' >
+                    <group>
+                         <group>
+                            <field name="lesson_id" />
+                            <field name="state" invisible="0" />
+                            <field name="student_ids" widget = "many2many_tags"
+                            attrs="{'invisible':[('state','in',['end','start'])]}"/>
+                         </group>
+                        <footer>
+                            <button name="do_apply"  string="确定" type="object" class="oe_highlight"/>
+                            <button  string="取消" special="cancel"/>
+                        </footer>
+                    </group>
+                </form>
+            </field>
+    </record>
+
+
+    <record id='training_lesson_graph' model ='ir.ui.view'  >
+        <field name='name'>training_lesson_graph</field>
+        <field name='model'>training.lesson</field>
+        <field name='arch' type='xml'>
+            <graph string='课程'>
+                <field name="name" />
+            </graph>
+        </field>
 
     </record>
 
@@ -92,15 +129,21 @@
         <field name='model'>training.lesson</field>
         <field name='arch' type='xml'>
             <form string='课程'>
+                <header>
+                      <field name="state" widget='statusbar' statusbar_visible="new,start,end"/>
+                    </header>
                 <group>
                     <field name="name" />
                     <field name="subject_id" context="{'is_form':'1'}"/>
+                    <field name="manager_id" />
                     <field name="start_date" />
                     <field name="end_date" />
                     <field name="sites" />
+                    <field name="remain_seats" />
+                    <field name="progress" widget="progressbar"/>
                     <field name="teacher_id" context="{'is_teacher':'1'}" options="{'no_open':True,'no_create':True}"/>
                     <field name="student_ids" />
-                    <field name="state" widget='statusbar' statusbar_visible="new,start,end"/>
+
                 </group>
 
                 <button name="start"  string="开课" type="object"
@@ -127,6 +170,15 @@
     </record>
 
 
+    <record id='training_apply_action' model='ir.actions.act_window'>
+        <field name='name'>学生报名</field>
+        <field name='res_model'>training.apply</field>
+        <field name='view_type'>form</field>
+        <field name='view_mode'>form</field>
+        <field name='target'>new</field>
+    </record>
+
+
     <record id='training_subject_action' model='ir.actions.act_window'>
         <field name='name'>科目</field>
         <field name='res_model'>training.subject</field>
@@ -134,14 +186,16 @@
         <field name='view_mode'>tree,form</field>
     </record>
 
+
     <record id='training_lesson_action' model='ir.actions.act_window'>
         <field name='name'>课程</field>
         <field name='res_model'>training.lesson</field>
         <field name='view_type'>form</field>
-        <field name='view_mode'>calendar,tree,form</field>
+        <field name='view_mode'>calendar,tree,form,graph,pivot</field>
         <field name="context">{'search_default_startlesson':'1'}</field>
         <!--魔术变量，search_default开头，startlesson 为filter的name，进入ui后默认执行该filter-->
     </record>
+
 
     <record id='res_partner_action' model='ir.actions.act_window'>
         <field name='name'>学生</field>
@@ -150,6 +204,7 @@
         <field name='view_mode'>tree,form</field>
     </record>
 
+
     <menuitem id='training_subject_root' name='课程管理系统' sequence='0'/>
     <menuitem id='training_subject_menu' name='科目' parent ='training_subject_root'
               action='training_subject_action' sequence='1'/>
@@ -157,4 +212,6 @@
           action='training_lesson_action' sequence='2'/>
     <menuitem id='res_partner_menu' name='学生' parent ='training_subject_root'
           action='res_partner_action' sequence='3'/>
+    <menuitem id='training_apply_menu' name='学生报名' parent ='training_subject_root'
+          action='training_apply_action' sequence='4'/>
 </odoo>
