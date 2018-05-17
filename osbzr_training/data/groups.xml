@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="group_teacher" model="res.groups">
+            <field name="name">老师</field>
+    </record>
+
+
+    <record id="teacher_see_self_olny" model="ir.rule">
+        <field name="name">老师只能看到自己负责的课程</field>
+        <field name="model_id" ref='osbzr_training.model_training_lesson' />
+        <field name="domain_force">[('manager_id','=',user.id)]</field>
+        <field name="groups" eval="[(4,ref('osbzr_training.group_teacher'))]" />
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
+
+</odoo>

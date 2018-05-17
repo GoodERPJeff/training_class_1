@@ -60,7 +60,7 @@ class TrainingLesson(models.Model):
     remain_seats = fields.Float(string='剩下名额', compute='_get_progress_and_remain_seats', inverse='_inverse_seats',
                                 store=True, digits=(16, 0))
     # inverse 反过来计算功能，如果没有该选项，计算字段不可编辑，如果指定的话，可以编辑用于反算
-    manager_id = fields.Many2one('res.users', related='subject_id.manager_id', string='负责人', readonly=True)
+    manager_id = fields.Many2one('res.users', related='subject_id.manager_id', string='负责人', readonly=True, store=True)
 
     @api.depends('sites')
     def _inverse_seats(self):

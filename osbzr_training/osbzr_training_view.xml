@@ -208,11 +208,11 @@
 
     <menuitem id='training_subject_root' name='课程管理系统' sequence='0'/>
     <menuitem id='training_subject_menu' name='科目' parent ='training_subject_root'
-              action='training_subject_action' sequence='1'/>
+              action='training_subject_action' sequence='1' groups="group_teacher"/>
     <menuitem id='training_lesson_menu' name='课程' parent ='training_subject_root'
-          action='training_lesson_action' sequence='2'/>
-    <menuitem id='res_partner_menu' name='学生' parent ='training_subject_root'
-          action='res_partner_action' sequence='3'/>
+          action='training_lesson_action' sequence='2'  groups="group_teacher"/>
     <menuitem id='training_apply_menu' name='学生报名' parent ='training_subject_root'
-          action='training_apply_action' sequence='4'/>
+          action='training_apply_action' sequence='3'/>
+    <menuitem id='res_partner_menu' name='学生' parent ='training_subject_root'
+          action='res_partner_action' sequence='999'/>
 </odoo>
