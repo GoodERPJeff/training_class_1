@@ -175,6 +175,7 @@ class Apply(models.TransientModel):
         }
 
 
+
     @api.multi
     @api.onchange('lesson_id')
     def sync_state_on_chage(self):

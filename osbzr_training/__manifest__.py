@@ -14,5 +14,6 @@
     'website':'https://github.com/GoodERPJeff/training_class_1',
     'depends': [],
     'auto_install': False,
-    'data':["osbzr_training_view.xml"]
+    'data':["osbzr_training_view.xml"],
+    'demo':["data/training_demo.xml"]
 }
