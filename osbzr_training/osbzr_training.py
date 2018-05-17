@@ -159,7 +159,20 @@ class Apply(models.TransientModel):
             'domain':[('id','in',[s.id for s in self.student_ids])],
             'view_id':False,
         }
-    # viewmode为tree传domain 为form传res_id
+    # viewmode为tree传domain 为form传res
+
+
+    @api.multi
+    def do_pre_filter(self):
+        return{
+            'name':u'开课的学生tree',
+            'view_type':'form',
+            'view_mode':'tree',
+            'res_model':'training.lesson',
+            'type':'ir.actions.act_window',
+            'domain':[('state','=','new')],
+            'view_id':False,
+        }
 
 
     @api.multi

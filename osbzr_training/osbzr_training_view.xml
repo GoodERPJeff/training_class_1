@@ -106,6 +106,7 @@
                         <footer>
                             <button name="do_apply"  string="确定" type="object" class="oe_highlight"/>
                             <button  string="取消" special="cancel"/>
+                            <button name="do_pre_filter"  string="测试前置filter" type="object" class="oe_highlight"/>
                         </footer>
                     </group>
                 </form>
