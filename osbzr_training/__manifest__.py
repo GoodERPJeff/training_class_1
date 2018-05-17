@@ -12,7 +12,7 @@
     用于开阖openerp培训实例
     """,
     'website':'https://github.com/GoodERPJeff/training_class_1',
-    'depends': [],
+    'depends': ["mail"],
     'auto_install': False,
     'data':["data/groups.xml","osbzr_training_view.xml","ir.model.access.csv"],
     'demo':["data/training_demo.xml"]
