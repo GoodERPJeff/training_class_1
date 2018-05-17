@@ -19,7 +19,7 @@
             <field name="subject_id" ref="subject_math" />
             <field name="start_date">"2018-05-10"</field>
             <field name="end_date">"2018-05-10"</field>
-            <field name="state">"new"</field>
+            <field name="state">new</field>
             <field name="sites">5</field>
             <field name="student_ids" eval="[(4,ref('student_xiaowang')),(4,ref('student_xiaoli'))]" />
         </record>
