@@ -3,7 +3,7 @@ odoo.define('osbzr_training.core',function(require) {
     var core = require('web.core')
     var Widget = require('web.Widget')
     var MyHomepage = Widget.extend({
-        templatet:'ebweb',
+        template:'ebweb',
         init:function (parent,data) {
             return this._super.apply(this,arguments)
         },
@@ -11,5 +11,7 @@ odoo.define('osbzr_training.core',function(require) {
             return true;
         },
     });
+    console.log('Hello my js');
     core.action_registry.add("ebweb",MyHomepage)
+    console.log(core.action_registry);
 });

@@ -16,5 +16,5 @@
     'auto_install': False,
     'data': ["data/groups.xml", "osbzr_training_view.xml", "ir.model.access.csv", "report.xml"],
     'demo': ["data/training_demo.xml"],
-#    'qweb': ["static/template.xml"],
+    'qweb': ["static/src/xml/template.xml"],
 }
