@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="osbzr_training.report_lesson">
+        <t t-foreach="docs" t-as="o">
+            <p t-esc="o.name + u' 的课程'"/>
+            <p t-field="o.start_date"/>
+            <p t-field="o.end_date"/>
+
+            <th t-if="o.state=='new'">
+                <p t-field="o.sites"/>
+                <p t-field="o.state"/>
+            </th>
+
+            <p t-field="o.teacher_id"/>
+
+            <t t-foreach="o.student_ids" t-as="stu">
+
+                <p t-esc="u'学生：' + stu.name"/>
+            </t>
+        </t>
+    </template>
+</odoo>

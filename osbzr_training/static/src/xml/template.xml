@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<template>
+    <t t-name= "ebweb">
+        <iframme marginheight="0" marginwidth="0" width="100%" height="100%" src="http://www.gooderp.org" frameborder="0" allowfullscreen="True"></iframme>
+    </t>
+
+</template>

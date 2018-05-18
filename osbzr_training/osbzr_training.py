@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-from odoo import models, fields, api, exceptions
+from odoo import models, fields, api, exceptions, _
 from datetime import datetime
 
 
@@ -131,7 +131,8 @@ class TrainingLesson(models.Model):
 # 报名向导界面
 class Apply(models.TransientModel):
     _name = 'training.apply'
-    lesson_id = fields.Many2one(string="课程", comodel_name='training.lesson')
+    lesson_id = fields.Many2one(string="课程", comodel_name='training.lesson',
+                                default = lambda self:self.env.context.get('active_id'))
     student_ids = fields.Many2many(string="报名学生", comodel_name='res.partner')
     state = fields.Selection([('new', '招生'), ('start', '已开课'), ('end', '已结束')], string="课程状态")
 
@@ -195,3 +196,6 @@ class ResPartner(models.Model):
 
     # 提取xml字段里面定义的老师标记，决定是否默认为老师 default=一个函数
     is_teacher = fields.Boolean(u'是老师', default=_is_teacher)
+
+
+
