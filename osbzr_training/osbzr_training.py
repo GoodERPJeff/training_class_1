@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-from odoo import models, fields, api, exceptions
+from odoo import models, fields, api, exceptions, _
 from datetime import datetime
 
 
@@ -41,6 +41,7 @@ class TrainingSubject(models.Model):
 class TrainingLesson(models.Model):
     _name = 'training.lesson'
     _rec_name = 'name'
+    _inherit = ["mail.thread"]
 
     name = fields.Char(u'名称',
                        size=64,
@@ -48,13 +49,16 @@ class TrainingLesson(models.Model):
 
     subject_id = fields.Many2one(string=u'科目名称',
                                  comodel_name='training.subject')
-    start_date = fields.Date("开始日期")
+    start_date = fields.Date("开始日期" ,
+                             track_visibility='onchange')
     end_date = fields.Date("结束日期")
     sites = fields.Integer("座位数")
     teacher_id = fields.Many2one(comodel_name='res.partner', string="老师", domain="[('is_teacher','=',True)]",
                                  ondelete='restrict')
     student_ids = fields.Many2many(comodel_name='res.partner', string="学生")
-    state = fields.Selection([('new', '招生'), ('start', '已开课'), ('end', '已结束')], string="课程状态", default='new')
+    state = fields.Selection([('new', '招生'), ('start', '已开课'),
+                              ('end', '已结束')], string="课程状态", default='new',
+                             track_visibility='aways')
     continue_days = fields.Integer(string='持续天数', compute='_get_continue_days', store=True)
     progress = fields.Float(string='报名进度', compute='_get_progress_and_remain_seats')
     remain_seats = fields.Float(string='剩下名额', compute='_get_progress_and_remain_seats', inverse='_inverse_seats',
@@ -127,7 +131,8 @@ class TrainingLesson(models.Model):
 # 报名向导界面
 class Apply(models.TransientModel):
     _name = 'training.apply'
-    lesson_id = fields.Many2one(string="课程", comodel_name='training.lesson')
+    lesson_id = fields.Many2one(string="课程", comodel_name='training.lesson',
+                                default = lambda self:self.env.context.get('active_id'))
     student_ids = fields.Many2many(string="报名学生", comodel_name='res.partner')
     state = fields.Selection([('new', '招生'), ('start', '已开课'), ('end', '已结束')], string="课程状态")
 
@@ -191,3 +196,6 @@ class ResPartner(models.Model):
 
     # 提取xml字段里面定义的老师标记，决定是否默认为老师 default=一个函数
     is_teacher = fields.Boolean(u'是老师', default=_is_teacher)
+
+
+

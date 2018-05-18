@@ -63,8 +63,32 @@
                 <field name="state" />
             </calendar>
         </field>
-
     </record>
+
+
+    <record model="ir.ui.view" id="lesson_view_kanban">
+            <field name="name">课程看板</field>
+            <field name="model">training.lesson</field>
+            <field name="arch" type="xml">
+                <kanban create="false">
+                  <field name="name"/>
+                  <field name="start_date"/>
+                  <field name="end_date"/>
+                  <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_details"/>
+                            <h4>
+                                <span><field name='name'/></span>
+                            </h4>
+                        <span><field name='sites'/></span>
+                    </t>
+                  </templates>
+                </kanban>
+            </field>
+        </record>
+
+
+
 
 
     <record id='training_lesson_search' model ='ir.ui.view'  >
@@ -151,6 +175,11 @@
                     attrs="{'invisible':[('state','in',['end','start'])]}"/>
                 <button name="end" string="结束" type="object"
                         attrs="{'invisible':[('state','in',['end','new'])]}"/>
+                <div class="oe_chatter">
+                    <field name ="message_follower_ids" widget="mail_followers"/>
+                    <field name ="message_ids" widget="mail_thread"/>
+
+                </div>
             </form>
         </field>
     </record>
@@ -192,7 +221,7 @@
         <field name='name'>课程</field>
         <field name='res_model'>training.lesson</field>
         <field name='view_type'>form</field>
-        <field name='view_mode'>calendar,tree,form,graph,pivot</field>
+        <field name='view_mode'>calendar,tree,form,graph,pivot,kanban</field>
         <field name="context">{'search_default_startlesson':'1'}</field>
         <!--魔术变量，search_default开头，startlesson 为filter的name，进入ui后默认执行该filter-->
     </record>
@@ -206,6 +235,49 @@
     </record>
 
 
+    <!--<record id='action_open_website' model='ir.actions.act_url'>-->
+        <!--<field name='name'>跳转网页</field>-->
+        <!--<field name='target'>new</field>-->
+        <!--<field name='url'>https://tweb.ddtimer.com</field>-->
+    <!--</record>-->
+
+    <record id='action_eb_website' model='ir.actions.client'>
+        <field name='name'>内置嵌入网页</field>
+        <field name='tag'>ebweb</field>
+    </record>
+
+    <template id="assets_backend" name="Core" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/osbzr_training/static/src/js/core.js"></script>
+        </xpath>
+
+    </template>
+
+    <act_window
+        id="action_apply_from_lesson"
+        name="课程报名"
+        res_model="training.apply"
+        src_model="training.lesson"
+        view_mode="form"
+        target="new"
+        multi="0"
+        key2="client_action_multi"
+    />
+
+
+
+    <report
+        id="action_report_print_lesson_lst"
+        model="training.lesson"
+        report_type="qweb-html"
+        string="课程报名情况表"
+        name="osbzr_training.report_lesson"
+        file="osbzr_training.report_lesson"
+
+    />
+        <!--multi 为True在tree form都出来   Fale： only form-->
+
+
     <menuitem id='training_subject_root' name='课程管理系统' sequence='0'/>
     <menuitem id='training_subject_menu' name='科目' parent ='training_subject_root'
               action='training_subject_action' sequence='1' groups="group_teacher"/>
@@ -214,5 +286,8 @@
     <menuitem id='training_apply_menu' name='学生报名' parent ='training_subject_root'
           action='training_apply_action' sequence='3'/>
     <menuitem id='res_partner_menu' name='学生' parent ='training_subject_root'
-          action='res_partner_action' sequence='999'/>
+          action='res_partner_action' sequence='998'/>
+
+    <menuitem id='res_partner_menu' name='自定义路由' parent ='training_subject_root'
+          action='action_eb_website' sequence='999'/>
 </odoo>
